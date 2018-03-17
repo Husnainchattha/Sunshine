@@ -46,11 +46,9 @@ public class MainActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         this.context = this;
 new OurAsyncTask().execute();
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
@@ -84,12 +82,15 @@ new OurAsyncTask().execute();
             WeatherInformation item=data[position];
             holder.description.setText(item.getDescription());
 //          holder.humidity.setText(String.valueOf(item.getHumidity()));
-            holder.wgrade1.setText(String.valueOf(item.getMaxTemp()));
-            holder.wgrade2.setText(String.valueOf(item.getMinTemp()));
-            holder.wgrade1.setText(item.getMaxTemp()+"\u00B0");
-            holder.wgrade2.setText(item.getMinTemp()+"\u00B0");
+           // holder.wgrade1.setText(String.valueOf(item.getMaxTemp()));
+           // holder.wgrade2.setText(String.valueOf(item.getMinTemp()));
+            holder.wgrade1.setText(String.valueOf(item.getMaxTemp())+"\u00B0");
+            holder.wgrade2.setText(String.valueOf(item.getMinTemp())+"\u00B0");
             holder.dayname.setText(item.getDayofweek());
-           // holder.imageView.setImageResource(item.getImage());
+            holder.fgradem.setText(String.valueOf(item.getMaxTemp())+"\u00B0");
+            holder.fgraden.setText(String.valueOf(item.getMinTemp())+"\u00B0");
+            holder.cloude.setText(item.getDescription());
+
             if(item.getDescription().toLowerCase().contains("rain")){
 
                holder.imageView.setImageResource(R.drawable.ic_rain);
@@ -98,22 +99,20 @@ new OurAsyncTask().execute();
                holder.imageView.setImageResource(R.drawable.ic_mobileme_logo_of_black_cloud);
             }else{
                 holder.imageView.setImageResource(R.drawable.ic_sun);
-
             }
         }
-
         @Override
         public int getItemCount() {
             return data.length;
         }
        class ViewHolder extends RecyclerView.ViewHolder {
            public TextView description;
-           public TextView humidity;
+           public TextView cloude;
            public TextView wgrade1;
+           public TextView fgradem;
+           public TextView fgraden;
            public TextView wgrade2;
           public ImageView imageView;
-          public TextView speed;
-          public TextView location;
           public TextView dayname;
             public ViewHolder(View itemView) {
                super(itemView);
@@ -123,6 +122,9 @@ new OurAsyncTask().execute();
                wgrade2=itemView.findViewById(R.id.grade4);
               dayname=itemView.findViewById(R.id.dayname2);
               imageView=itemView.findViewById(R.id.icon);
+              fgradem=findViewById(R.id.grade);
+              fgraden=findViewById(R.id.grade1);
+              cloude=findViewById(R.id.clear);
                itemView.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
@@ -154,10 +156,8 @@ new OurAsyncTask().execute();
             recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
             OurAdapter adapter=new OurAdapter(cities);
             recyclerView.setAdapter(adapter);
-
             }else
                 Toast.makeText(MainActivity.this,"No data",Toast.LENGTH_LONG).show();
-
         }
 
         @Override
@@ -179,6 +179,7 @@ new OurAsyncTask().execute();
                         weatherInformation.setDescription(weatherObject.getString("description"));
 
                     }
+                    weatherInformation.setDate(object.getLong("dt"));
                     weatherInformation.setHumidity(main.getDouble("humidity"));
                     weatherInformation.setPressure(main.getDouble("pressure"));
                     JSONObject windObject=object.getJSONObject("wind");

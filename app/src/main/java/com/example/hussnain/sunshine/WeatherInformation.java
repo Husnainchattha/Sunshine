@@ -18,7 +18,8 @@ public class WeatherInformation implements Serializable{
     private String location;
     private String dayofweek;
     private  int image;
-    public WeatherInformation(double maxTemp, double minTemp, String description, double pressure, double humidity, double wind, String location,String dayofweek,int image) {
+    private long date;
+    public WeatherInformation(double maxTemp, double minTemp, String description, double pressure, double humidity, double wind, String location,String dayofweek,int image,long date) {
         this.maxTemp = maxTemp;
         this.minTemp = minTemp;
         this.description = description;
@@ -28,6 +29,7 @@ public class WeatherInformation implements Serializable{
         this.location = location;
         this.dayofweek=dayofweek;
         this.image=image;
+        this.date=date;
     }
     public WeatherInformation(){}
 
@@ -101,5 +103,13 @@ public class WeatherInformation implements Serializable{
 
     public void setImage(int image) {
         this.image = image;
+    }
+
+    public long getDate() {
+        return date;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
     }
 }
